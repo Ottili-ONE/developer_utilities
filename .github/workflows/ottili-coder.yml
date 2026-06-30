@@ -32,4 +32,4 @@ jobs:
         with:
           model: openai/gpt-5.4-mini
           use_platform_broker: "true"
-          use_github_token: "false"
+          use_github_token: "true"
