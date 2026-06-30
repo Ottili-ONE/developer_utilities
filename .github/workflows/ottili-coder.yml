@@ -1,0 +1,33 @@
+# Ottili Coder — auto-installed by CodeHelm (managed plan).
+# No provider API key needed: the platform supplies credentials via OIDC.
+# Trigger: comment "/oc <task>" on any issue or PR.
+name: ottili-coder
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  ottili-coder:
+    if: >
+      ${{ contains(github.event.comment.body, '/ottili-coder') ||
+          contains(github.event.comment.body, '/oc') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: Ottili-ONE/coder-cli/github@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OTTILI_CODER_INSTALL_URL: https://ottili.one/coder/install
+        with:
+          model: openai/gpt-5.4-mini
+          use_platform_broker: "true"
+          use_github_token: "true"
